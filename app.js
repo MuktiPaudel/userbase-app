@@ -25,9 +25,11 @@ app.set('views',path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 // body parser middleware, parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false })) 
+app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
-app.use(bodyParser.json())
+app.use(bodyParser.json());
+// set public folder as a collection of static files.
+app.use(express.static(path.join(__dirname, 'public')));
 
 // index.pug route
 app.get('/', (req, res) => {
@@ -42,6 +44,15 @@ app.get('/', (req, res) => {
         });
       }
   }); 
+});
+
+//get single article
+app.get('/article/:id', function(req, res){
+ Article.findById(req.params.id, function(err, article){
+    res.render('article',{
+        article:article
+    });
+ });
 });
 
 // add route
